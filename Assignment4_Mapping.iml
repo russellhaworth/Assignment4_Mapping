@@ -14,21 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="JavaSE-1.7" jdkType="JavaSDK" />
-    <orderEntry type="library" name="org.lejos.ev3.ldt.LEJOS_EV3_LIBRARY_CONTAINER" level="application" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="jgrapht-core-1.5.0.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jgrapht-1.5.0/lib/jgrapht-core-1.5.0.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="file://$MODULE_DIR$/lib/jgrapht-1.5.0/javadoc" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/lib/jgrapht-1.5.0/source" />
-        </SOURCES>
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="opencv-2411" level="project" />
     <orderEntry type="library" name="dbusjava" level="project" />
     <orderEntry type="library" name="ev3classes" level="project" />
