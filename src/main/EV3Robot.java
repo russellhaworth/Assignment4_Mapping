@@ -14,11 +14,7 @@ import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.MovePilot;
 
 public class EV3Robot {
-	public static final String OFFENSE = "OFFENSE";
-	public static final String INITIAL = "INITIAL";
-	public static final String FOUND_BALL = "FOUND_BALL";
-	public static final String FOUND_OBJECT = "FOUND_OBJECT";
-	public static final String FOUND_OBSTACLE = "FOUND OBSTACLE";
+	
 	private String robotState;
 	EV3LargeRegulatedMotor motorA; //Left motor
 	EV3LargeRegulatedMotor motorB; //Right motor

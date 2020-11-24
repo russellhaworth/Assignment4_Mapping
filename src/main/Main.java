@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
@@ -56,21 +55,16 @@ public class Main {
 	    }
 		
 		if(mode == 1) {
-			robot.setRobotState(robot.INITIAL);
+			robotState.state = State.INITIAL;
 			robot.playBeep();
-			System.out.println("STATE: " + robot.getRobotState());
+			//System.out.println("STATE: " + robot.getRobotState());
 			System.out.println("PRESS ANY BUTTON TO BEGIN OFFENSE");
 			Button.waitForAnyPress();
 			LCD.clearDisplay();
-			robot.setRobotState(robot.OFFENSE);
 			mt.start();
 			st.start();
-			ct.start();			
-			while(mode == 1) {
-			
-			}
-			
-			
+			ct.start();		
+			robotState.state = State.GO_TO_MIDDLE_AND_ROTATE;
 			
 		}
 		else if(mode == 2) {
@@ -95,7 +89,6 @@ public class Main {
 					input = in.readInt();
 					System.out.println("Input: " + input);
 				}	
-				
 				
 				switch(input) {
 				case 1: 

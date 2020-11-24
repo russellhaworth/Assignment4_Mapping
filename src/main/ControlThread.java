@@ -23,26 +23,23 @@ public class ControlThread implements Runnable {
 
 	@Override
 	public void run() {
-				//System.out.println("ENTER CONTROL THREAD");
 		while(robotState.shouldRun) {
-			if(sampleSet.getLastUltrasonicDistance() < 50) {
-				robot.setRobotState(robot.FOUND_OBJECT);
-				System.out.println("ROBOT STATE: FOUND OBJECT");
+			if(robotState.state == State.GO_TO_MIDDLE_AND_ROTATE) {
+				if(sampleSet.getLastUltrasonicDistance() < 30) {
+					robotState.state = State.FOUND_OBJECT;
+				}
 			}
-			//System.out.println("IR Distance: " + sampleSet.getLastIRDistance());
-			//System.out.println("ULT Distance: " + sampleSet.getLastUltrasonicDistance());
-		}
-		while(robot.getRobotState() == robot.FOUND_OBJECT) {
-			if(sampleSet.getLastUltrasonicDistance() < 10) {
-				if(sampleSet.getLastIRDistance() < 30) {
-					robot.setRobotState(robot.FOUND_OBSTACLE);
-					System.out.println("ROBOT STATE: FOUND OBSTACLE");
-				} else {
-					robot.setRobotState(robot.FOUND_BALL);
-					System.out.println("ROBOT STATE: FOUND BALL");
+			if(robotState.state == State.FOUND_OBJECT && sampleSet.getLastUltrasonicDistance() <= 10) {
+				robotState.state = State.STOPPED_IN_FRONT_OF_OBJECT;
+			}
+			if(robotState.state == State.STOPPED_IN_FRONT_OF_OBJECT) {
+				if(sampleSet.getLastUltrasonicDistance() <= 10 && sampleSet.getLastIRDistance() >= 35) {
+					robotState.state = State.FOUND_BALL;
+				}
+				else if(sampleSet.getLastUltrasonicDistance() <= 10 && sampleSet.getLastIRDistance() <= 35) {
+					robotState.state = State.FOUND_OBSTACLE;
 				}
 			}
 		}
-				
 	}
 }
