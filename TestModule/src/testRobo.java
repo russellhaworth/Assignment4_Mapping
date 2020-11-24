@@ -2,7 +2,12 @@ import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.port.Port;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
+import lejos.hardware.sensor.EV3IRSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
@@ -24,11 +29,11 @@ public class testRobo {
     static final String MOTOR_PORT_LEFT = "B";
     static final String MOTOR_PORT_RIGHT = "C";
     static final String MOTOR_PORT_CLAW = "D";
-    static final String SENSOR_PORT_GYRO = "???";
-    static final String SENSOR_PORT_COLOR = "???";
-    static final String SENSOR_PORT_IR = "???";
-    static final String SENSOR_PORT_ULTRASONIC = "???";
-    static final String SENSOR_PORT_TOUCH = "???";
+    static final Port SENSOR_PORT_GYRO = SensorPort.S3;
+    static final Port SENSOR_PORT_COLOR = SensorPort.S1;
+    static final Port SENSOR_PORT_IR = SensorPort.S2;
+    static final Port SENSOR_PORT_ULTRASONIC = SensorPort.S4;
+    static final Port SENSOR_PORT_TOUCH = SensorPort.S1;
 
 
     public static void main(String[] args) throws IOException {
@@ -36,7 +41,10 @@ public class testRobo {
         RegulatedMotor left = new EV3LargeRegulatedMotor(brick.getPort(MOTOR_PORT_LEFT)); //Left motor
         RegulatedMotor right = new EV3LargeRegulatedMotor(brick.getPort(MOTOR_PORT_RIGHT)); //Right motor
         RegulatedMotor claw = new EV3LargeRegulatedMotor(brick.getPort(MOTOR_PORT_CLAW)); //Right motor
-        EV3GyroSensor gyro = new EV3GyroSensor(brick.getPort(SENSOR_PORT_GYRO));
+        EV3GyroSensor gyroS = new EV3GyroSensor(SENSOR_PORT_GYRO);
+        EV3IRSensor irS = new EV3IRSensor(SENSOR_PORT_IR);
+        EV3UltrasonicSensor ultraS = new EV3UltrasonicSensor(SENSOR_PORT_ULTRASONIC);
+        EV3ColorSensor colorS = new EV3ColorSensor(SENSOR_PORT_COLOR);
         Wheel[] wheels = new Wheel[] {
                 WheeledChassis.modelWheel(left, DIAMETER).offset(OFFSET),
                 WheeledChassis.modelWheel(right, DIAMETER).offset(0-OFFSET)  };
@@ -49,7 +57,7 @@ public class testRobo {
             Button.waitForAnyPress();
             System.exit(1);
         }
-        RoboChassis chassis = new RoboChassis(wheels, gyro, fos);
+        RoboChassis chassis = new RoboChassis(wheels, gyroS, fos);
 
         PaceTest(chassis, 5, 4);
 
@@ -102,11 +110,11 @@ public class testRobo {
 
     }
 
-    public static void writeString(String name, String value) {
+    public static synchronized void writeString(String name, String value) {
 
     }
 
-    public static void printPose(String name, PoseProvider p) {
+    public static synchronized void printPose(String name, PoseProvider p) {
         Pose pose = p.getPose();
         String str = String.format("%f, %10s: (%.2f, %.2f) at %.2f degrees.\f", System.currentTimeMillis(), name, pose.getX(), pose.getY(), pose.getHeading());
     }

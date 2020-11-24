@@ -76,7 +76,7 @@ public class RoboChassis extends WheeledChassis {
         this.dataOut = new DataOutputStream(out);
     }
 
-    public void writePose(Pose p, String name) {
+    public synchronized void writePose(Pose p, String name) {
         if (!dataOut.equals(null)) {
             try{
                 String s = String.format("%d, %s: (%.2f, %.2f) at %f.2 degrees.\n", System.currentTimeMillis(), name, p.getX(), p.getY(), p.getHeading());
@@ -89,7 +89,7 @@ public class RoboChassis extends WheeledChassis {
         }
     }
 
-    public void writeString(String data) {
+    public synchronized void writeString(String data) {
         if (!dataOut.equals(null)) {
             try{
                 String str = String.format("%f: %d\n", System.currentTimeMillis(), data);

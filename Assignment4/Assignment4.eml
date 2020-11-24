@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<component inherit-compiler-output="true" inheritJdk="true">
-	<output-test url="file://$MODULE_DIR$/classes/test/Assignment4"/>
-	<exclude-output/>
-	<contentEntry url="file://$MODULE_DIR$/Assignment4">
-		<excludeFolder url="file://$MODULE_DIR$/Assignment4/TestModule"/>
-	</contentEntry>
-	<lib name="LeJOS EV3" scope="PROVIDED"/>
-</component>
