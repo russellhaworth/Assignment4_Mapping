@@ -10,7 +10,7 @@ public class test {
         GameField gameField = new GameField();
         LineMap map = new LineMap(gameField.lineArray, gameField.bounds);
         Pose start = new Pose(0, 0, 270);
-        Waypoint goal = new Waypoint(125, 150);
+        Waypoint goal = new Waypoint(125, 110);
         ShortestPathFinder finder = new ShortestPathFinder(map);
         finder.lengthenLines(5);
         PathFollower pFollow = new PathFollower();

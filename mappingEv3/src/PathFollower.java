@@ -16,7 +16,7 @@ public class PathFollower{
     }
 
     public void newPose(Pose pose){
-        navigator.setPoseProvider((PoseProvider) pose);
+        navigator.getPoseProvider().setPose(pose);
     }
     public void navigate(){
         while(!navigator.pathCompleted()){
