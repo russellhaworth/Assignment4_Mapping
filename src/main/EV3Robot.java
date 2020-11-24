@@ -41,6 +41,10 @@ public class EV3Robot {
 	private SampleProvider colorSampler;
 	private float[] lastColor;
 	
+	private EV3GyroSensor gyroSensor;
+	private SampleProvider gyroSampler;
+	private float[] lastGyro;
+	
 	
 	
 	public EV3Robot() {
@@ -62,8 +66,12 @@ public class EV3Robot {
 	    colorSensor = new EV3ColorSensor(SensorPort.S1);
         colorSensor.setCurrentMode(2); //Set mode to RGB
         colorSampler = colorSensor.getRGBMode();
-        lastColor = new float[colorSampler.sampleSize()];    
-	   
+        lastColor = new float[colorSampler.sampleSize()];
+        
+        gyroSensor = new EV3GyroSensor(SensorPort.S2);
+        gyroSensor.setCurrentMode(2);
+        gyroSampler = gyroSensor.getAngleAndRateMode();
+	    lastGyro = new float[gyroSampler.sampleSize()];
 	}
 	
 	
@@ -81,6 +89,11 @@ public class EV3Robot {
 	public float[] getLastColor() {
     	colorSampler.fetchSample(lastColor, 0);
     	return lastColor;
+	}
+	
+	public float[] getLastGyro() {
+		gyroSampler.fetchSample(lastGyro, 0);
+		return lastGyro;
 	}
 	
 	

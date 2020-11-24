@@ -24,7 +24,9 @@ public class MotorThread implements Runnable {
 					}					
 				}
 				if(robotState.state == State.ROTATE_360) {
+					if(robot.pilot.isMoving()) {
 					robot.pilot.rotate(360);
+					}
 				}
 				if(robotState.state == State.FOUND_OBJECT) {
 					threadInterrupted = true;

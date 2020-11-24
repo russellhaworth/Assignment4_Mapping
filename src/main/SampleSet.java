@@ -23,6 +23,7 @@ public class SampleSet {
         setLastUltrasonicDistance(robot.getUltrasonicDistance());
         setLastColor(robot.getLastColor());
         setLastColorString();
+        setLastGyro(robot.getLastGyro());
         
 
     }
@@ -38,20 +39,16 @@ public class SampleSet {
     public float getLastGyroRate() {
         return lastGyroRate;
     }
-
-    public void setLastGyroRate(float lastGyroRate) {
-        this.lastGyroRate = lastGyroRate;
-    }
     
     public float getLastGyroAngle() {
         return lastGyroAngle;
     }
-
-    public void setLastGyroAngle(float lastGyroAngle) {
-        this.lastGyroAngle = lastGyroAngle;
-    }    
     
-
+    public void setLastGyro(float[] lastGyro) {
+    	this.lastGyroRate = lastGyro[0];
+    	this.lastGyroAngle = lastGyro[1];
+    } 
+    
     public float getLastIRDistance() {
         return lastIRDistance;
     }
