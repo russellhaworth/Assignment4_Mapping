@@ -36,7 +36,7 @@ public class ControlThread implements Runnable {
 				if(sampleSet.getLastUltrasonicDistance() <= 10 && sampleSet.getLastIRDistance() >= 35) {
 					robotState.state = State.FOUND_BALL;
 				}
-				else if(sampleSet.getLastUltrasonicDistance() <= 10 && sampleSet.getLastIRDistance() <= 35) {
+				else if(sampleSet.getLastUltrasonicDistance() <= 10 && sampleSet.getLastIRDistance() < 35) {
 					robotState.state = State.FOUND_OBSTACLE;
 				}
 			}

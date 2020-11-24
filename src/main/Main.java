@@ -28,7 +28,7 @@ import lejos.utility.Delay;
 
 public class Main {
 	
-	//private static GameField gameField = new GameField();
+	private static GameField gameField = new GameField();
 	private static EV3Robot robot = new EV3Robot();
 	private static SampleSet sampleSet = new SampleSet(robot);
 	private static RobotState robotState = new RobotState();
@@ -50,7 +50,7 @@ public class Main {
 			if(Button.LEFT.isDown()) {
 				mode = 1; //Set Autonomous mode
 			} else if(Button.RIGHT.isDown()) {
-				mode = 2;
+				mode = 2; //Remote Control Mode
 			}
 	    }
 		
