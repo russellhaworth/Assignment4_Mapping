@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="commons-cli">
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/3rdparty/commons-cli.jar" />
+  </library>
+  <library name="dbusjava">
+    <archive path="C:/Program Files/leJOS EV3/lib/ev3/dbusjava.jar" />
+  </library>
+  <library name="ev3classes">
+    <archive path="C:/Program Files/leJOS EV3/lib/ev3/ev3classes.jar" />
+  </library>
+  <library name="ev3tools">
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/ev3tools.jar" />
+  </library>
+  <library name="jcommon">
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/3rdparty/jcommon.jar" />
+  </library>
+  <library name="jfreechart">
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/3rdparty/jfreechart.jar" />
+  </library>
+  <library name="jsch-0.1.50">
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/3rdparty/jsch-0.1.50.jar" />
+  </library>
+  <library name="opencv-2411">
+    <archive path="C:/Program Files/leJOS EV3/lib/ev3/3rdparty/opencv-2411.jar" />
+  </library>
+  <library name="LeJOS EV3">
+    <archive path="C:/Program Files/leJOS EV3/lib/ev3/3rdparty/opencv-2411.jar" />
+    <archive path="C:/Program Files/leJOS EV3/lib/ev3/dbusjava.jar" />
+    <archive path="C:/Program Files/leJOS EV3/lib/ev3/ev3classes.jar" />
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/3rdparty/commons-cli.jar" />
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/3rdparty/jcommon.jar" />
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/3rdparty/jfreechart.jar" />
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/3rdparty/jsch-0.1.50.jar" />
+    <archive path="C:/Program Files/leJOS EV3/lib/pc/ev3tools.jar" />
+  </library>
+</eclipse-userlibraries>
+
