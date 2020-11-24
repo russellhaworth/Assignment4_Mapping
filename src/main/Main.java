@@ -54,6 +54,7 @@ public class Main {
 			}
 	    }
 		
+	    //Autonomous Mode
 		if(mode == 1) {
 			robotState.state = State.INITIAL;
 			robot.playBeep();
@@ -64,10 +65,11 @@ public class Main {
 			mt.start();
 			st.start();
 			ct.start();		
-			//robotState.state = State.GO_TO_MIDDLE_AND_ROTATE;
+			robotState.state = State.GO_TO_MIDDLE;
 			System.out.println("Current State: " + robotState.state);
 			
 		}
+		//Remote Control
 		else if(mode == 2) {
 			st.start(); //Start sensor thread to ensure robot doesn't run into wall.
 			System.out.println("Remote Control Mode");
@@ -77,7 +79,7 @@ public class Main {
 			isEscapeDown.setDaemon(true);
 			isEscapeDown.start();
 			while (mode == 2) {
-				if(sampleSet.getLastUltrasonicDistance() <= 15) {
+				if(sampleSet.getLastIRDistance() <= 17) {
 					input = 999;
 				} else {
 					Socket socket;

@@ -1,5 +1,7 @@
 package main;
 
+import java.lang.reflect.Field;
+
 import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
@@ -10,10 +12,13 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.MovePilot;
 
 public class EV3Robot {
+	
+	private static int MOTOR_SPEED = 200;
 	
 	private String robotState;
 	EV3LargeRegulatedMotor motorA; //Left motor
@@ -32,6 +37,10 @@ public class EV3Robot {
 	private SampleProvider ultSampler;
 	private float[] lastUltRange;
 	
+	private EV3ColorSensor colorSensor;
+	private SampleProvider colorSampler;
+	private float[] lastColor;
+	
 	
 	
 	public EV3Robot() {
@@ -39,6 +48,8 @@ public class EV3Robot {
 	    motorB = new EV3LargeRegulatedMotor(MotorPort.C);
 	    motorC = new EV3MediumRegulatedMotor(MotorPort.D);
 	    pilot = new MovePilot(diam, trackwidth, motorA, motorB);
+	    pilot.setLinearSpeed(10);
+	    pilot.setAngularSpeed(10);
 	    
 	    irSensor = new EV3IRSensor(SensorPort.S3);
 	    rangeSampler = irSensor.getDistanceMode();
@@ -48,6 +59,10 @@ public class EV3Robot {
 	    ultSampler = ultSensor.getDistanceMode();
 	    lastUltRange = new float[ultSampler.sampleSize()];
 	    
+	    colorSensor = new EV3ColorSensor(SensorPort.S1);
+        colorSensor.setCurrentMode(2); //Set mode to RGB
+        colorSampler = colorSensor.getRGBMode();
+        lastColor = new float[colorSampler.sampleSize()];    
 	   
 	}
 	
@@ -61,6 +76,11 @@ public class EV3Robot {
 	public float getUltrasonicDistance() {
 		ultSampler.fetchSample(lastUltRange, 0);
 		return lastUltRange[0]*100;
+	}
+	
+	public float[] getLastColor() {
+    	colorSampler.fetchSample(lastColor, 0);
+    	return lastColor;
 	}
 	
 	
@@ -77,21 +97,29 @@ public class EV3Robot {
 	}
 	
 	public void robotForward() {
+		motorA.setSpeed(MOTOR_SPEED);
+		motorB.setSpeed(MOTOR_SPEED);
 		motorA.forward();
 		motorB.forward();
 	}
 	
 	public void robotRotateLeft() {
+		motorA.setSpeed(MOTOR_SPEED);
+		motorB.setSpeed(MOTOR_SPEED);
 		motorA.backward();
 		motorB.forward();
 	}
 	
 	public void robotRotateRight() {
+		motorA.setSpeed(MOTOR_SPEED);
+		motorB.setSpeed(MOTOR_SPEED);
 		motorA.forward();
 		motorB.backward();
 	}
 	
 	public void robotReverse() {
+		motorA.setSpeed(MOTOR_SPEED);
+		motorB.setSpeed(MOTOR_SPEED);
 		motorA.backward();
 		motorB.backward();
 	}
@@ -99,6 +127,7 @@ public class EV3Robot {
 	public void robotStop() {
 		motorA.stop();
 		motorB.stop();
+		motorC.stop();
 	}
 	
 	public void robotHonk() {

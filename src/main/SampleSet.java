@@ -6,8 +6,13 @@ public class SampleSet {
     private float lastUltrasonicDistance;
     private float lastGyroRate;
     private float lastGyroAngle;
-    private String lastColor;
+    private float[] lastColor;
     private final EV3Robot robot;
+    private float lastRedColor;
+    private float lastGreenColor;
+    private float lastBlueColor;
+    private String lastColorString;
+    private String currentColorString;
 
     public SampleSet(EV3Robot robot) {
         this.robot = robot;
@@ -16,6 +21,9 @@ public class SampleSet {
     public void takeSamples(){
         setLastIRDistance(robot.getIRDistance());
         setLastUltrasonicDistance(robot.getUltrasonicDistance());
+        setLastColor(robot.getLastColor());
+        setLastColorString();
+        
 
     }
     
@@ -52,11 +60,46 @@ public class SampleSet {
         this.lastIRDistance = lastIRDistance;
     }
 
-    public String getLastColor() {
+    public float[] getLastColor() {
         return lastColor;
     }
-
-    public void setLastColor(String lastColor) {
-        this.lastColor = lastColor;
+    
+    public float getLastRedColor() {
+    	return lastRedColor*100;
     }
+    
+    public float getLastGreenColor() {
+    	return lastGreenColor*100;
+    }
+    
+    public float getLastBlueColor() {
+    	return lastBlueColor*100;
+    }
+    
+    public void setLastColorString() {
+    	if(getLastBlueColor() <= 1.5 && getLastGreenColor() <= 1.5 && getLastRedColor() <= 1.5) {
+    		this.currentColorString = "BLACK";
+    	} 
+    	else if(getLastBlueColor() <= 1.5 && getLastGreenColor() >= 3 && getLastRedColor() <= 1.5) {
+    		this.currentColorString = "GREEN";
+    	}
+    	else if(getLastBlueColor() >= 4 && getLastGreenColor() <= 3.0 && getLastRedColor() <= 1.8) {
+    		this.currentColorString = "BLUE";
+    	}
+    	else if(getLastBlueColor() >= 5 && getLastGreenColor() >= 5.0 && getLastRedColor() >= 5.0) {
+    		this.currentColorString = "WHITE";
+    	}
+    }
+    
+    public String getCurrentColorString() {
+    	return currentColorString;
+    }
+
+    public void setLastColor(float[] lastColor) {
+        this.lastColor = lastColor;
+        this.lastRedColor = lastColor[0];
+        this.lastGreenColor = lastColor[1];
+        this.lastBlueColor = lastColor[2];
+    }
+    
 }

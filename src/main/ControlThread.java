@@ -1,6 +1,9 @@
 package main;
 
 import lejos.utility.Stopwatch;
+
+import java.awt.Color;
+
 import lejos.utility.Delay;
 
 
@@ -24,16 +27,29 @@ public class ControlThread implements Runnable {
 	@Override
 	public void run() {
 		while(robotState.shouldRun) {
-			System.out.println("ULT Distance: " + sampleSet.getLastUltrasonicDistance());
-			System.out.println("IR Distance: " + sampleSet.getLastIRDistance());
-			Delay.msDelay(1000);
+			
 			/*
-			if(robotState.state == State.GO_TO_MIDDLE_AND_ROTATE) {
-				if(sampleSet.getLastUltrasonicDistance() < 30) {
-					robotState.state = State.FOUND_OBJECT;
-				}
+			System.out.println("RED: " + sampleSet.getLastRedColor());
+			System.out.println("GREEN: " + sampleSet.getLastGreenColor());
+			System.out.println("BLUE " + sampleSet.getLastBlueColor());
+			Delay.msDelay(1000);
+			*/
+			
+			System.out.println("CURRENT COLOR " + sampleSet.getCurrentColorString());
+			
+			
+			System.out.println("CURRENT STATE: " + robotState.state);
+			
+			if(robotState.state == State.GO_TO_MIDDLE && sampleSet.getCurrentColorString()=="BLACK") {
+				robotState.state = State.ROTATE_360;
 			}
-			if(robotState.state == State.FOUND_OBJECT && sampleSet.getLastUltrasonicDistance() <= 10) {
+			if(robotState.state == State.ROTATE_360 && sampleSet.getLastUltrasonicDistance() <= 20) {
+				robotState.state = State.FOUND_OBJECT;
+			}
+			if(robotState.state == State.FOUND_OBJECT) {
+				robotState.state = State.GO_TO_OBJECT;
+			}
+			if(robotState.state == State.GO_TO_OBJECT && sampleSet.getLastUltrasonicDistance() <= 10) {
 				robotState.state = State.STOPPED_IN_FRONT_OF_OBJECT;
 			}
 			if(robotState.state == State.STOPPED_IN_FRONT_OF_OBJECT) {
@@ -44,7 +60,8 @@ public class ControlThread implements Runnable {
 					robotState.state = State.FOUND_OBSTACLE;
 				}
 			}
-			*/
+			
+			
 		}
 	}
 }
