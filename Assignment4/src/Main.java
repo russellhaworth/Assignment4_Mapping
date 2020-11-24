@@ -1,96 +1,135 @@
-import java.awt.Button;
+package main;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.Motor;
+import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
+import lejos.robotics.navigation.MovePilot;
+import lejos.hardware.Battery;
+import lejos.hardware.Sound;
+import lejos.hardware.motor.Motor;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.*;
+import lejos.robotics.*;
+import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
+
 
 
 public class Main {
 	
-	public static void main(String[] args) throws IOException {
-		final GameField gameField = new GameField();
-		final EV3Robot robot = new EV3Robot();
+	//private static GameField gameField = new GameField();
+	private static EV3Robot robot = new EV3Robot();
+	private static SampleSet sampleSet = new SampleSet(robot);
+	private static RobotState robotState = new RobotState();
+	private static int mode = 0;
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
+
 		
-		EV3IRSensor ir1 = new EV3IRSensor(SensorPort.S3);
-		final SampleProvider spIR = ir1.getDistanceMode();
-		int distanceValueIR = 0;
+		Thread mt = new Thread(new MotorThread(robotState, robot));
+		Thread st = new Thread(new SensorThread(robotState, robot ,sampleSet));
+		Thread ct = new Thread(new ControlThread(robotState, robot, sampleSet));
 		
-		EV3UltrasonicSensor ultrasonicSensor = new EV3UltrasonicSensor(SensorPort.S4);
-	    ultrasonicSensor.setCurrentMode(0);
-	    final SampleProvider spUltrasonic = ultrasonicSensor.getDistanceMode();
-	    double distanceValueUltrasonic = 0;
-	    
-		System.out.println("Press Left Button for Autonomous Mode.");
-		System.out.println("Press Right Button for Remote Control Mode.");
-		Button.waitForAnyPress();
-		//LCD.clearDisplay();
-		if(Button.LEFT.isDown()) {
-			robot.setRobotState("INITIAL");
+		
+	    if(mode == 0) {
+	    	System.out.println("Press Left Button for Autonomous Mode.");
+			System.out.println("Press Right Button for Remote Control Mode.");
+			Button.waitForAnyPress();
+			//LCD.clearDisplay();
+			if(Button.LEFT.isDown()) {
+				mode = 1; //Set Autonomous mode
+			} else if(Button.RIGHT.isDown()) {
+				mode = 2;
+			}
+	    }
+		
+		if(mode == 1) {
+			robot.setRobotState(robot.INITIAL);
 			robot.playBeep();
-			System.out.println("STATE: INITIAL");
+			System.out.println("STATE: " + robot.getRobotState());
 			System.out.println("PRESS ANY BUTTON TO BEGIN OFFENSE");
 			Button.waitForAnyPress();
 			LCD.clearDisplay();
-			robot.setRobotState("OFFENSE");
-			while(robot.getRobotState() == "OFFENSE") {
-				
-				float [] sampleIR = new float[spIR.sampleSize()];
-	        	spIR.fetchSample(sampleIR, 0);
-	        	distanceValueIR = (int)sampleIR[0];
-	        	
-	        	float [] sampleUltrasonic = new float[spUltrasonic.sampleSize()];
-	        	spUltrasonic.fetchSample(sampleUltrasonic, 0);
-	        	distanceValueUltrasonic = (double)sampleUltrasonic[0]*100;
-	        	
-	        	System.out.println("IR Distance = " + distanceValueIR);
-	        	System.out.println("Ultrasonic Distance = " + distanceValueUltrasonic);
-	        	Delay.msDelay(1000);
+			robot.setRobotState(robot.OFFENSE);
+			mt.start();
+			st.start();
+			ct.start();			
+			while(mode == 1) {
+			
 			}
 			
 			
 			
 		}
-		else if(Button.RIGHT.isDown()) {
+		else if(mode == 2) {
+			st.start(); //Start sensor thread to ensure robot doesn't run into wall.
 			System.out.println("Remote Control Mode");
 			int input;
 			ServerSocket server = new ServerSocket(1111);
 			IsEscapeDownChecker isEscapeDown = new IsEscapeDownChecker(server);
 			isEscapeDown.setDaemon(true);
 			isEscapeDown.start();
-			while (true) {
-				Socket socket;
-				try {
-					socket = server.accept();
-				} catch (IOException e) {
-					break;
-				}
-				DataInputStream in = new DataInputStream(socket.getInputStream());
-				input = in.readInt();
-				System.out.println("Input: " + input);
+			while (mode == 2) {
+				if(sampleSet.getLastUltrasonicDistance() <= 15) {
+					input = 999;
+				} else {
+					Socket socket;
+					try {
+						socket = server.accept();
+					} catch (IOException e) {
+						break;
+					}
+					DataInputStream in = new DataInputStream(socket.getInputStream());
+					input = in.readInt();
+					System.out.println("Input: " + input);
+				}	
+				
 				
 				switch(input) {
-				case 1: robot.robotForward();
-				case 2: robot.robotReverse();
+				case 1: 
+					robot.robotForward();
+					break;
+				case 2: 
+					robot.robotReverse();
+					break;
 				case 3: robot.robotRotateRight();
-				case 4: robot.robotRotateLeft();
-				case 5: robot.robotStop();
-				case 6: {
+					break;
+				case 4: 
+					robot.robotRotateLeft();
+					break;
+				case 5: 
+					robot.robotStop();
+					break;
+				case 6: 
 					robot.robotExitRemote();
 					Sound.setVolume(100);
 					Sound.buzz();
 					server.close();
-					}
-				case 7: robot.robotHonk();
-				case 8: robot.closeClaw();
-				case 9: robot.openClaw();
+					mode = 0;
+					break;
+				case 7: 
+					robot.robotHonk();
+					break;
+				case 8: 
+					robot.closeClaw();
+					break;
+				case 9: 
+					robot.openClaw();
+					break;
+				case 999:
+					robot.sentient(); //Robot saves itself from harm
 				}
 				
 			
