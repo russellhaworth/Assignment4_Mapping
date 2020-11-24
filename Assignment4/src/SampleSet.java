@@ -1,5 +1,3 @@
-package main;
-
 
 public class SampleSet {
     private float lastIRDistance;

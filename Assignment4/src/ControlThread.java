@@ -1,4 +1,3 @@
-package main;
 
 import lejos.utility.Stopwatch;
 import lejos.utility.Delay;

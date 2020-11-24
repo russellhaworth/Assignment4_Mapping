@@ -1,4 +1,3 @@
-package main;
 
 public enum State {
 	GO_TO_MIDDLE, ROTATE_360, FOUND_OBJECT, FOUND_OBSTACLE, FOUND_BALL

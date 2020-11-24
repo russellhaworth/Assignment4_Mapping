@@ -1,4 +1,3 @@
-package main;
 
 import lejos.robotics.navigation.MovePilot;
 
