@@ -24,6 +24,10 @@ public class ControlThread implements Runnable {
 	@Override
 	public void run() {
 		while(robotState.shouldRun) {
+			System.out.println("ULT Distance: " + sampleSet.getLastUltrasonicDistance());
+			System.out.println("IR Distance: " + sampleSet.getLastIRDistance());
+			Delay.msDelay(1000);
+			/*
 			if(robotState.state == State.GO_TO_MIDDLE_AND_ROTATE) {
 				if(sampleSet.getLastUltrasonicDistance() < 30) {
 					robotState.state = State.FOUND_OBJECT;
@@ -40,6 +44,7 @@ public class ControlThread implements Runnable {
 					robotState.state = State.FOUND_OBSTACLE;
 				}
 			}
+			*/
 		}
 	}
 }

@@ -64,7 +64,8 @@ public class Main {
 			mt.start();
 			st.start();
 			ct.start();		
-			robotState.state = State.GO_TO_MIDDLE_AND_ROTATE;
+			//robotState.state = State.GO_TO_MIDDLE_AND_ROTATE;
+			System.out.println("Current State: " + robotState.state);
 			
 		}
 		else if(mode == 2) {
