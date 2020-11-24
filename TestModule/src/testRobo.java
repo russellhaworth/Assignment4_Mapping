@@ -18,14 +18,25 @@ import java.io.IOException;
 public class testRobo {
     //location of the wheel along the y-axis.  Width / 2.
     static final int OFFSET = 132;
-    static double DIAMETER = MovePilot.WHEEL_SIZE_EV3;
+    static final double DIAMETER = MovePilot.WHEEL_SIZE_EV3;
+
+
+    static final String MOTOR_PORT_LEFT = "B";
+    static final String MOTOR_PORT_RIGHT = "C";
+    static final String MOTOR_PORT_CLAW = "D";
+    static final String SENSOR_PORT_GYRO = "???";
+    static final String SENSOR_PORT_COLOR = "???";
+    static final String SENSOR_PORT_IR = "???";
+    static final String SENSOR_PORT_ULTRASONIC = "???";
+    static final String SENSOR_PORT_TOUCH = "???";
+
 
     public static void main(String[] args) throws IOException {
         Brick brick = BrickFinder.getLocal();
-        RegulatedMotor left = new EV3LargeRegulatedMotor(brick.getPort("B")); //Left motor
-        RegulatedMotor right = new EV3LargeRegulatedMotor(brick.getPort("C")); //Right motor
-        RegulatedMotor claw = new EV3LargeRegulatedMotor(brick.getPort("D")); //Right motor
-        EV3GyroSensor gyro = new EV3GyroSensor(brick.getPort("?????"));
+        RegulatedMotor left = new EV3LargeRegulatedMotor(brick.getPort(MOTOR_PORT_LEFT)); //Left motor
+        RegulatedMotor right = new EV3LargeRegulatedMotor(brick.getPort(MOTOR_PORT_RIGHT)); //Right motor
+        RegulatedMotor claw = new EV3LargeRegulatedMotor(brick.getPort(MOTOR_PORT_CLAW)); //Right motor
+        EV3GyroSensor gyro = new EV3GyroSensor(brick.getPort(SENSOR_PORT_GYRO));
         Wheel[] wheels = new Wheel[] {
                 WheeledChassis.modelWheel(left, DIAMETER).offset(OFFSET),
                 WheeledChassis.modelWheel(right, DIAMETER).offset(0-OFFSET)  };
@@ -77,6 +88,22 @@ public class testRobo {
         }
         printPose("Robot", gyroProv);
         printPose("Robot", poseProv);
+    }
+
+    public static void SpinTest(RoboChassis chassis, int degrees, int times) {
+        PoseProvider gyroProv = chassis.getGyroOdomPoseProvider();
+        PoseProvider poseProv = chassis.getPoseProvider();
+        for (int i=0;i<times;i++) {
+
+        }
+    }
+
+    public static void RandomSpinTest(RoboChassis chassis, int times) {
+
+    }
+
+    public static void writeString(String name, String value) {
+
     }
 
     public static void printPose(String name, PoseProvider p) {

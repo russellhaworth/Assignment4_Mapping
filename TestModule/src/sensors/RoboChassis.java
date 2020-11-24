@@ -186,9 +186,6 @@ public class RoboChassis extends WheeledChassis {
         }
 
         private class PoseTracker extends Thread {
-            private PoseTracker() {
-            }
-
             public void run() {
                 while(true) {
                     Odometer.this.updatePose();
