@@ -17,9 +17,9 @@ import java.io.IOException;
 
 public class testRobo {
     //location of the wheel along the y-axis.  Width / 2.
-    static final int OFFSET = 132;
-    static final double DIAMETER = MovePilot.WHEEL_SIZE_EV3;
-
+    static final double WIDTH = 21.59;
+    static final double OFFSET = 21.59/2;
+    static final double DIAMETER = MovePilot.WHEEL_SIZE_EV3; //4.32cm
 
     static final String MOTOR_PORT_LEFT = "B";
     static final String MOTOR_PORT_RIGHT = "C";
