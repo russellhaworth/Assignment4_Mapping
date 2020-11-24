@@ -1,5 +1,6 @@
 package sensors;
 
+import lejos.hardware.Button;
 import lejos.hardware.motor.BaseRegulatedMotor;
 import lejos.hardware.port.Port;
 import lejos.hardware.port.UARTPort;
@@ -12,6 +13,11 @@ import lejos.robotics.localization.PoseProvider;
 import lejos.robotics.navigation.Pose;
 import lejos.utility.Delay;
 import lejos.utility.Matrix;
+
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 //holds 2 different odomenters.
 //OdometerByGyro: calculates position by distance traveled and heading taken
@@ -34,6 +40,9 @@ public class RoboChassis extends WheeledChassis {
     protected Matrix reverse2;
     protected Matrix forward2;
     protected double baseDistance = 0;
+    FileOutputStream out;
+    DataOutputStream dataOut;
+
 
     public RoboChassis(Wheel[] wheels) {
         super(wheels, TYPE_DIFFERENTIAL);
@@ -52,6 +61,7 @@ public class RoboChassis extends WheeledChassis {
         odometerByGyro = null;
         odometer = null;
         this.gyro = null;
+        this.dataOut = null;
 	}
 
     public RoboChassis(Wheel[] wheels, EV3GyroSensor gyro) {
@@ -59,6 +69,39 @@ public class RoboChassis extends WheeledChassis {
         this.gyro = gyro;
         this.gyroProvider = gyro.getAngleMode();
     }
+
+    public RoboChassis(Wheel[] wheels, EV3GyroSensor gyro, FileOutputStream fio) {
+        this(wheels, gyro);
+        this.out = fio;
+        this.dataOut = new DataOutputStream(out);
+    }
+
+    public void writePose(Pose p, String name) {
+        if (!dataOut.equals(null)) {
+            try{
+                String s = String.format("%d, %s: (%.2f, %.2f) at %f.2 degrees.\n", System.currentTimeMillis(), name, p.getX(), p.getY(), p.getHeading());
+                dataOut.writeChars(s);
+            }catch(IOException e){
+                System.err.println("Failed to write to output stream");
+                Button.waitForAnyPress();
+                System.exit(1);
+            }
+        }
+    }
+
+    public void writeString(String data) {
+        if (!dataOut.equals(null)) {
+            try{
+                String str = String.format("%f: %d\n", System.currentTimeMillis(), data);
+                dataOut.writeChars(str);
+            }catch(IOException e){
+                System.err.println("Failed to write to output stream");
+                Button.waitForAnyPress();
+                System.exit(1);
+            }
+        }
+    }
+
 
     public RoboChassis(Wheel[] wheels, EV3GyroSensor gyro, int i) {
         this(wheels);
@@ -136,6 +179,9 @@ public class RoboChassis extends WheeledChassis {
             }
 
             this.time = Math.max(Math.min(this.time, 64), 4);
+            if (!lastTacho.equals(currentTacho)){
+                writePose(getPose(), "     Odom");
+            }
             this.lastTacho = currentTacho;
         }
 
@@ -228,6 +274,9 @@ public class RoboChassis extends WheeledChassis {
             //  System.out.println("max is " + max);
             if (prevTime != time)
                 System.out.println("Set time to " + time);
+            if (!lastTacho.equals(currentTacho)){
+                writePose(getPose(), "Gyro Odom");
+            }
             lastTacho = currentTacho;
         }
 
@@ -264,6 +313,9 @@ public class RoboChassis extends WheeledChassis {
             if (max > 10) time=time / 2;
             if (max < 10) time=time * 2;
             time = Math.max(Math.min(time, 64), 4);
+            if (!lastTacho.equals(currentTacho)){
+                writePose(getPose(), "Gyro Odom");
+            }
             lastTacho = currentTacho;
         }
 
@@ -298,6 +350,9 @@ public class RoboChassis extends WheeledChassis {
             if (max < 10) time=time * 2;
             time = Math.max(Math.min(time, 64), 4);
             time = 64;
+            if (!lastTacho.equals(currentTacho)){
+                writePose(getPose(), "Gyro Odom");
+            }
             lastTacho = currentTacho;
         }
 
