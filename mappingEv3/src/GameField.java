@@ -2,16 +2,12 @@ import lejos.robotics.geometry.Line;
 import lejos.robotics.geometry.Rectangle;
 import lejos.robotics.mapping.LineMap;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GameField {
-    List<Line>lineList = new ArrayList<Line>();
-    Line[] lineArray = lineList.toArray(new Line[0]);
-    float length = 142;
-    float width = 114;
-    int spacing = 14;
-    Rectangle bounds = new Rectangle(0,0,142,114);
+    Line[] lineArray = new Line[20];
+    float length = (float)142.24;
+    float width = (float) 114.3;
+    float spacing = (float) 21.59;
+    Rectangle bounds = new Rectangle(0,0,length, width);
 
 
     public GameField() {
@@ -23,30 +19,11 @@ public class GameField {
     }
 
     private void drawLines(){
-        Line newLine;
-        int p = spacing;
-        //todo: forms the colored verticle lines
-        for(int i = 0; i < 7; i ++){
-            newLine = new Line(p,0, p, 114);
-            lineList.add(newLine);
-            p += spacing;
-        }
-         //todo: figure horizontal line placement
-        p = spacing;
-        for(int i = 0; i < length/spacing; i++){
-            newLine = new Line(0,p, 0, 142);
-            lineList.add(newLine);
-            p += spacing;
-        }
+        Line newLine = new Line((float)53.34,(float)0.0,(float)53.34,(float)27.94);
+        lineArray[0] = newLine;
+
     }
 
-    public List<Line> getLineList() {
-        return lineList;
-    }
-
-    public void setLineList(List<Line> lineList) {
-        this.lineList = lineList;
-    }
 
     public void setLineArray(Line[] lineArray) {
         this.lineArray = lineArray;
@@ -68,7 +45,7 @@ public class GameField {
         this.width = width;
     }
 
-    public int getSpacing() {
+    public float getSpacing() {
         return spacing;
     }
 
