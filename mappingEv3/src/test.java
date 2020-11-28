@@ -12,7 +12,10 @@ import lejos.robotics.pathfinding.ShortestPathFinder;
 public class test {
     public static void main(String[] args) throws DestinationUnreachableException, InterruptedException {
 
-        //travel to middle of field then score
+        private EV3MediumRegulatedMotor motorC; // Claw motor
+        motorC = new EV3MediumRegulatedMotor(MotorPort.D);
+    	
+    	//travel to middle of field then score
         GameField gameField = new GameField();
         LineMap map = new LineMap(gameField.lineArray, gameField.bounds);
         Pose start = new Pose((float) 12.7, (float) 11.43, 0);
@@ -44,6 +47,7 @@ public class test {
         pFollow.newPath(path);
         pFollow.navigate();
         if (pFollow.isPathComplete()) {
+        	getBall();
             Sound.beepSequenceUp();
             pFollow.score(pFollow.getPose());
         }
@@ -51,5 +55,25 @@ public class test {
     public static float getUltrasonicDistance(SampleProvider ultSampler, float[] lastUltRange) {
         ultSampler.fetchSample(lastUltRange, 0);
         return lastUltRange[0]*100;
+    }
+    
+    
+    public static void getBall() {
+    	openClaw();
+    	closeClaw();
+    }
+    
+    // opens the claw
+    public static void openClaw() {
+    	motorC.forward();
+    	Delay.msDelay(2000);
+    	motorC.stop();
+    }
+    
+    // closes the claw
+    public static void closeClaw() {
+    	motorC.backward();
+    	Delay.msDelay(2000);
+    	motorC.stop();
     }
 }
