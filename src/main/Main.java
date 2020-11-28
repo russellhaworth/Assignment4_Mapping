@@ -14,7 +14,13 @@ import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
+import lejos.robotics.mapping.LineMap;
+import lejos.robotics.navigation.DestinationUnreachableException;
 import lejos.robotics.navigation.MovePilot;
+import lejos.robotics.navigation.Pose;
+import lejos.robotics.navigation.Waypoint;
+import lejos.robotics.pathfinding.Path;
+import lejos.robotics.pathfinding.ShortestPathFinder;
 import lejos.hardware.Battery;
 import lejos.hardware.Sound;
 import lejos.hardware.motor.Motor;
@@ -28,13 +34,15 @@ import lejos.utility.Delay;
 
 public class Main {
 	
-	private static GameField gameField = new GameField();
+	//private static GameField gameField = new GameField();
+	private static GameField2 gameField = new GameField2();
 	private static EV3Robot robot = new EV3Robot();
 	private static SampleSet sampleSet = new SampleSet(robot);
 	private static RobotState robotState = new RobotState();
+	private static PathFollower pFollow = new PathFollower(robot, gameField);
 	private static int mode = 0;
 	
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws IOException, InterruptedException, DestinationUnreachableException {
 
 		
 		Thread mt = new Thread(new MotorThread(robotState, robot));
@@ -65,8 +73,37 @@ public class Main {
 			mt.start();
 			st.start();
 			ct.start();		
-			robotState.state = State.GO_TO_MIDDLE;
-			System.out.println("Current State: " + robotState.state);
+			//robotState.state = State.GO_TO_MIDDLE;
+			//System.out.println("Current State: " + robotState.state);
+			LineMap map = new LineMap(gameField.lineArray, gameField.bounds);
+	        Pose start = new Pose((float) 12.7, (float) 11.43, 0);
+	        //PathFollower pFollow = new PathFollower();
+
+	        pFollow.newPose(start);
+	        Plotter plotter = new Plotter();
+	        plotter.setAngle((float) pFollow.getAngle());
+	        plotter.setEquationX((float) pFollow.getX());
+	        plotter.setEquationY((float) pFollow.getY());
+	        plotter.setRobotY((float) pFollow.getY());
+	        plotter.setRobotX((float)pFollow.getX());
+	        float value = sampleSet.getLastUltrasonicDistance();
+	        System.out.println("hypotenues: " + value);
+	        plotter.setValue(value);
+
+	        Waypoint goal = plotter.createWayPoint();
+	        System.out.println("X value: " + goal.x);
+	        System.out.println("Y value: " + goal.y);
+	        //Waypoint goal = new Waypoint(71.12, 57.15);
+	        ShortestPathFinder finder = new ShortestPathFinder(map);
+	        finder.lengthenLines(20);
+	        //pFollow.newPose(start);
+	        Path path = finder.findRoute(start, goal);
+	        pFollow.newPath(path);
+	        pFollow.navigate();
+	        if (pFollow.isPathComplete()) {
+	            Sound.beepSequenceUp();
+	            pFollow.score(pFollow.getPose());
+	        }
 			
 		}
 		//Remote Control

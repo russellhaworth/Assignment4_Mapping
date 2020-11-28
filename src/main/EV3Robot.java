@@ -169,6 +169,10 @@ public class EV3Robot {
 		}
 	}
 	
+	public void stopClaw() {
+		motorC.stop();
+	}
+	
 	public void sentient() {
 		pilot.stop();
 		pilot.travel(-5);
