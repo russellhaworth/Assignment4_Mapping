@@ -3,7 +3,7 @@ import lejos.robotics.geometry.Rectangle;
 import lejos.robotics.mapping.LineMap;
 
 public class GameField {
-    Line[] lineArray = new Line[20];
+    Line[] lineArray = new Line[1];
     float length = (float)142.24;
     float width = (float) 114.3;
     float spacing = (float) 21.59;

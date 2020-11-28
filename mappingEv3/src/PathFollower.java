@@ -3,7 +3,6 @@ import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.MotorPort;
-import lejos.robotics.chassis.Chassis;
 import lejos.robotics.mapping.LineMap;
 import lejos.robotics.navigation.*;
 import lejos.robotics.pathfinding.Path;
@@ -54,6 +53,15 @@ public class PathFollower{
     }
 
     public void newPath(Path path) {navigator.setPath(path);
+    }
+    public double getX(){
+        return navigator.getPoseProvider().getPose().getX();
+    }
+    public double getY(){
+        return navigator.getPoseProvider().getPose().getY();
+    }
+    public double getAngle(){
+        return navigator.getPoseProvider().getPose().getHeading();
     }
 
     public void turnToGoal(){
