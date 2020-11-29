@@ -1,9 +1,13 @@
+
 import lejos.robotics.geometry.Line;
 import lejos.robotics.geometry.Rectangle;
 import lejos.robotics.mapping.LineMap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameField {
-    Line[] lineArray = new Line[1];
+    Line[] lineArray = new Line[0];
     float length = (float)142.24;
     float width = (float) 114.3;
     float spacing = (float) 21.59;
@@ -19,8 +23,8 @@ public class GameField {
     }
 
     private void drawLines(){
-        Line newLine = new Line((float)53.34,(float)0.0,(float)53.34,(float)27.94);
-        lineArray[0] = newLine;
+        //Line newLine = new Line((float)53.34,(float)0.0,(float)53.34,(float)27.94);
+        //lineArray[0] = newLine;
 
     }
 

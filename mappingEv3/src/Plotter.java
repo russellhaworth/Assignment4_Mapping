@@ -1,3 +1,5 @@
+package mapping;
+
 import lejos.robotics.navigation.Waypoint;
 
 public class Plotter {
@@ -10,14 +12,14 @@ public class Plotter {
 
     public float plotX(){
         float x = (float) ((value*Math.cos(angle)) + robotX);
-        setEquationX((float) (x - 12));
-        return (float) (x - 12);
+        setEquationX((float) (x));
+        return (float) (x);
     }
 
     public float plotY(){
         float y = (float) ((value*Math.sin(angle)) + robotY);
-        setEquationY(y);
-        return y ;
+        setEquationY(y+6);
+        return y+6 ;
     }
 
     public Waypoint createWayPoint(){
@@ -47,7 +49,7 @@ public class Plotter {
     }
 
     public void setAngle(float angle) {
-        this.angle = angle;
+        this.angle = (float) (angle + 0.0872665);
     }
 
     public float getValue() {
