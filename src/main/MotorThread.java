@@ -23,17 +23,11 @@ public class MotorThread implements Runnable {
 						robot.pilot.forward();
 					}					
 				}
-				if(robotState.state == State.ROTATE_360) {
-					if(robot.pilot.isMoving()) {
-					robot.pilot.rotate(360);
-					}
+				if(robotState.state == State.ROTATE) {
+					robot.pilot.rotate(5);
 				}
 				if(robotState.state == State.FOUND_OBJECT) {
-					threadInterrupted = true;
-					Thread.currentThread().interrupt();
-				}
-				if(robotState.state == State.FOUND_OBJECT && threadInterrupted) {
-					Thread.currentThread().resume();
+					robot.pilot.stop();
 				}
 				if(robotState.state == State.GO_TO_OBJECT) {
 					if(!robot.pilot.isMoving()) {

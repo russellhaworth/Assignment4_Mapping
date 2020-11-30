@@ -21,10 +21,12 @@ public class PathFollower{
 	}
 	
 	
+	
+	
     @SuppressWarnings("deprecation")
     final Waypoint scoreSquare = new Waypoint(137.16,22.32);
     //private GameField gameField = new GameField();
-    final Waypoint scoreNode = new Waypoint(125.92,22.86);
+    final Waypoint scoreNode = new Waypoint(130.92,19.86);
     //private DifferentialPilot pilot = new DifferentialPilot(3.25, 19.8, Motor.C, Motor.B);
     //private EV3MediumRegulatedMotor claw = new EV3MediumRegulatedMotor(MotorPort.D);
     private Navigator navigator = new Navigator(robot.pilot);
@@ -83,5 +85,9 @@ public class PathFollower{
     }
     public boolean isPathComplete() {
         return navigator.pathCompleted();
+    }
+    
+    public void setAngle(float angle) {
+        navigator.getPoseProvider().getPose().setHeading(angle);
     }
 }
