@@ -25,8 +25,8 @@ public class EV3Robot {
 	EV3LargeRegulatedMotor motorB; //Right motor
 	EV3MediumRegulatedMotor motorC; //Claw Motor
 	
-	double diam = MovePilot.WHEEL_SIZE_EV3;
-    double trackwidth = 23;
+	double diam = 3.25;
+    double trackwidth = 19.8;
 	MovePilot pilot;
 	
 	private EV3IRSensor irSensor;
